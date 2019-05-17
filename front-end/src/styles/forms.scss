@@ -1,0 +1,101 @@
+.form-group {
+  margin-bottom: 16px;
+
+  label {
+    text-transform: uppercase;
+    color: $color-grey-500;
+    font-size: 12px;
+    font-weight: 500;
+    margin: 0 0 8px 0;
+    display: inline-block;
+    user-select: none;
+  }
+
+  &.space-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    label {
+      margin: 0;
+    }
+  }
+}
+
+.form-control {
+  display: block;
+  border: solid .1rem $color-grey-100;
+  width: 100%;
+  line-height: 3rem;
+  font-family: $base-font-family;
+  font-size: $base-font-size;
+  color: $base-font-color;
+  border-radius: 10rem;
+  padding: 0 1rem;
+  transition: border-color 200ms ease, background-color 200ms ease,
+    box-shadow 200ms ease;
+  height: 3rem;
+  background-color: #fff;
+
+  &:focus {
+    border-color: $color-grey-400;
+    @include focus-box-shadow();
+    background-color: #fff;
+    outline: none;
+    color: #495057;
+  }
+
+  &.inline {
+    width: auto;
+    display: inline-block;
+  }
+
+  &.transparent {
+    border-color: transparent;
+    background-color: transparent;
+  }
+
+  &:disabled {
+    opacity: 0.7;
+  }
+
+  &::placeholder {
+    color: $color-grey-400;
+  }
+}
+
+textarea.form-control {
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
+}
+
+select.form-control {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 5'%3E%3Cpolygon fill='%23A3A3A3' points='0,0 4.5,5 9,0 '/%3E%3C/svg%3E%0A");
+  background-repeat: no-repeat;
+  background-position: right 0.7em top 50%;
+  background-size: 0.65em auto;
+  padding-right: 2.8rem;
+}
+
+.form-group.is-invalid .invalid-feedback,
+.form-group .is-invalid .invalid-feedback {
+  display: block;
+  font-size: 12px;
+}
+
+.form-group.is-invalid input,
+.form-group .is-invalid input {
+  border-color: $color-danger;
+}
+
+.form-error {
+  color: $color-danger;
+}
+
+input[type='checkbox'],
+input[type='radio'] {
+  margin-right: 0.8rem;
+}

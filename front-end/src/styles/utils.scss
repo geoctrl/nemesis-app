@@ -1,0 +1,75 @@
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.text-left {
+  text-align: left;
+}
+
+.text-sm {
+  font-size: .9em;
+}
+
+.block {
+  display: block !important;
+}
+
+.inline-block {
+  display: inline-block !important;
+}
+
+// MARGIN
+.mt-none { margin-top: 0 !important }
+.mt-sm { margin-top: 0.8rem !important }
+.mt-md { margin-top: 1.6rem !important }
+.mt-lg { margin-top: 2.4rem !important }
+.mt-xl { margin-top: 3.2rem !important }
+.ml-none { margin-left: 0 !important }
+.ml-sm { margin-left: 0.8rem !important }
+.ml-md { margin-left: 1.6rem !important }
+.ml-lg { margin-left: 2.4rem !important }
+.ml-xl { margin-left: 3.2rem !important }
+.mr-none { margin-right: 0 !important }
+.mr-sm { margin-right: 0.8rem !important }
+.mr-md { margin-right: 1.6rem !important }
+.mr-lg { margin-right: 2.4rem !important }
+.mr-xl { margin-right: 3.2rem !important }
+.mb-none { margin-bottom: 0 !important }
+.mb-sm { margin-bottom: 0.8rem !important }
+.mb-md { margin-bottom: 1.6rem !important }
+.mb-lg { margin-bottom: 2.4rem !important }
+.mb-xl { margin-bottom: 3.2rem !important }
+.m-none { margin: 0 !important }
+.m-sm { margin: 0.8rem !important }
+.m-md { margin: 1.6rem !important }
+.m-lg { margin: 2.4rem !important }
+.m-xl { margin: 3.2rem !important }
+
+// PADDING
+.pt-none { padding-top: 0 !important }
+.pt-sm { padding-top: 0.8rem !important }
+.pt-md { padding-top: 1.6rem !important }
+.pt-lg { padding-top: 2.4rem !important }
+.pt-xl { padding-top: 3.2rem !important }
+.pl-none { padding-left: 0 !important }
+.pl-sm { padding-left: 0.8rem !important }
+.pl-md { padding-left: 1.6rem !important }
+.pl-lg { padding-left: 2.4rem !important }
+.pl-xl { padding-left: 3.2rem !important }
+.pr-none { padding-right: 0 !important }
+.pr-sm { padding-right: 0.8rem !important }
+.pr-md { padding-right: 1.6rem !important }
+.pr-lg { padding-right: 2.4rem !important }
+.pr-xl { padding-right: 3.2rem !important }
+.pb-none { padding-bottom: 0 !important }
+.pb-sm { padding-bottom: 0.8rem !important }
+.pb-md { padding-bottom: 1.6rem !important }
+.pb-lg { padding-bottom: 2.4rem !important }
+.pb-xl { padding-bottom: 3.2rem !important }
+.p-none { padding: 0 !important }
+.p-sm { padding: 0.8rem !important }
+.p-md { padding: 1.6rem !important }
+.p-lg { padding: 2.4rem !important }
+.p-xl { padding: 3.2rem !important }
