@@ -6,7 +6,9 @@ import { Button } from '../components/button.component';
 import { Icon } from '../components/icon.component';
 import { ProgressBar } from './progress-bar.component';
 import { playerState } from '../core/player-state';
-import { REPEAT } from '../core/player-contants';
+import { REPEAT, REPEAT_NONE } from '../core/player-contants';
+import { Queue } from './queue.component';
+import { Volume } from './volume.component';
 
 export class Player extends Component {
   constructor(props) {
@@ -16,9 +18,10 @@ export class Player extends Component {
 
   componentDidMount() {
     playerState.setAudio(this.audioRef.current);
-    this.playerObservable = playerState.subscribe(({ queue, queueActiveIndex, audio, audioPlaying, repeat }) => {
-      this.setState({ queue, queueActiveIndex, audio, audioPlaying, repeat });
-    }, 'queue', 'queueActiveIndex', 'audio', 'audioPlaying', 'repeat');
+    this.playerObservable = playerState.subscribe((state) => {
+      const { queue, queueActiveIndex, audio, audioPlaying, repeat, volume } = state;
+      this.setState({ queue, queueActiveIndex, audio, audioPlaying, repeat, volume });
+    }, 'queue', 'queueActiveIndex', 'audio', 'audioPlaying', 'repeat', 'volume');
   }
 
   componentWillUnmount() {
@@ -32,11 +35,27 @@ export class Player extends Component {
     audioPlaying: false,
     queueActiveIndex: null,
     repeat: REPEAT,
+    volume: 1,
+  }
+
+  getVolumeIcon = () => {
+    const { volume } = this.state;
+    if (volume === 0) {
+      return 'volume-mute';
+    }
+    if (volume < .333333) {
+      return 'volume-down';
+    }
+    if (volume < .666666) {
+      return 'volume';
+    }
+    return 'volume-up';
   }
 
   render() {
-    const { queue, audio, audioPlaying, queueActiveIndex, repeat } = this.state;
+    const { queue, audio, audioPlaying, queueActiveIndex, repeat, volume } = this.state;
     const activeSong = queue && queue.length ? queue[queueActiveIndex] : null;
+    const audioReady = audio && audio.src;
     return (
       <Scoped css={css}>
         <audio
@@ -44,13 +63,6 @@ export class Player extends Component {
           src={null}
         />
         <div className="player">
-          <div className="queue">
-            {queue.map(song => (
-              <div key={song.key}>
-                {song.name}
-              </div>
-            ))}
-          </div>
           <div className="display">
             <div className="top">
               <div
@@ -102,7 +114,11 @@ export class Player extends Component {
                       icon="step-backward"
                       large
                       circle
-                      disabled={!audio}
+                      disabled={
+                        !audioReady ||
+                        queue.length === 1 ||
+                        (repeat === REPEAT_NONE && queueActiveIndex === 0)
+                      }
                       onClick={() => playerState.back()}
                     />
                     <Button
@@ -111,7 +127,7 @@ export class Player extends Component {
                       icon={audioPlaying ? 'pause' : 'play'}
                       large
                       circle
-                      disabled={!audio}
+                      disabled={!audioReady}
                       onClick={() => {
                         audioPlaying ? playerState.pause() : playerState.play();
                       }}
@@ -120,7 +136,11 @@ export class Player extends Component {
                       className="info__actions"
                       actionType="flat"
                       icon="step-forward"
-                      disabled={!audio}
+                      disabled={
+                        !audioReady ||
+                        queue.length === 1 ||
+                        (repeat === REPEAT_NONE && queueActiveIndex === queue.length - 1)
+                      }
                       large
                       circle
                       onClick={() => playerState.next()}
@@ -130,7 +150,7 @@ export class Player extends Component {
                     <Button
                       actionType="flat"
                       icon={repeat === REPEAT ? 'repeat' : 'long-arrow-right'}
-                      disabled={!audio}
+                      disabled={!audioReady}
                       large
                       circle
                       onClick={() => {
@@ -140,17 +160,16 @@ export class Player extends Component {
                     <Button
                       actionType="flat"
                       icon="random"
-                      disabled={!audio}
+                      disabled={!audioReady}
                       large
                       circle
                       onClick={() => playerState.shuffle()}
                     />
-                    <Button
-                      actionType="flat"
-                      icon="volume"
-                      disabled={!audio}
-                      large
-                      circle
+                    <Volume
+                      volume={volume}
+                      volumeIcon={this.getVolumeIcon()}
+                      onUpdate={playerState.updateVolume}
+                      disabled={!audioReady}
                     />
                   </div>
                 </div>
@@ -158,6 +177,7 @@ export class Player extends Component {
             </div>
             <ProgressBar />
           </div>
+          <Queue songs={queue} />
         </div>
       </Scoped>
     );
@@ -174,13 +194,9 @@ const css = k`
     display: flex;
     flex-direction: column;
   }
-  
-  .queue {
-    flex-grow: 1;
-  }
-  
+
   .display {
-    border-top: solid .1rem var(--color-grey-100);
+    border-bottom: solid .1rem var(--color-grey-100);
   }
   
   .top {

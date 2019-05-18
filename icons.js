@@ -18,4 +18,5 @@ module.exports = [
   { 'volume-down': 'regular/volume-down.svg' },
   { 'volume-mute': 'regular/volume-mute.svg' },
   { 'volume-slash': 'regular/volume-slash.svg' },
+  { 'music': 'regular/music.svg' },
 ];

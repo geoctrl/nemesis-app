@@ -4,6 +4,7 @@ import { REPEAT, REPEAT_NONE } from './player-contants';
 
 let durationInterval = null;
 const initialState = {
+  currentTime: 0,
   queue: [],
   queueName: null,
   queueActiveIndex: 0,
@@ -11,6 +12,7 @@ const initialState = {
   audioPlaying: false,
   duration: 0,
   repeat: REPEAT,
+  volume: 1,
 };
 
 class PlayerState extends SimpleState {
@@ -18,6 +20,13 @@ class PlayerState extends SimpleState {
     this.set({ audio });
     audio.onended = this.onEnded;
     audio.ondurationchange = this.updateCurrentTime;
+  }
+
+  ready = () => {
+    const { audio, queue, queueActiveIndex } = this.state;
+    if (!audio.getAttribute('src')) {
+      audio.setAttribute('src', queue[queueActiveIndex].src);
+    }
   }
 
   stop = () => {
@@ -31,10 +40,7 @@ class PlayerState extends SimpleState {
 
   play = () => {
     durationInterval = setInterval(this.updateCurrentTime, 249);
-    const { audio, queue, queueActiveIndex } = this.state;
-    if (!audio.getAttribute('src')) {
-      audio.setAttribute('src', queue[queueActiveIndex].src);
-    }
+    const { audio } = this.state;
     audio.play();
     this.set({ audioPlaying: true });
   }
@@ -52,6 +58,7 @@ class PlayerState extends SimpleState {
     if (lastIndex || repeat === REPEAT) {
       this.stop();
       this.set({ queueActiveIndex: lastIndex ? queueActiveIndex + 1 : 0 });
+      this.ready();
       if (audioPlaying) {
         this.play();
       }
@@ -67,6 +74,7 @@ class PlayerState extends SimpleState {
           ? queueActiveIndex - 1
           : queue.length - 1,
       });
+      this.ready();
       if (audioPlaying) {
         this.play();
       }
@@ -84,7 +92,7 @@ class PlayerState extends SimpleState {
       queue[currentIndex] = queue[randomIndex];
       queue[randomIndex] = temporaryValue;
     }
-    currentIndex = queue.findIndex(song => song.id === currentSong.id);
+    currentIndex = queue.findIndex(song => song.key === currentSong.key);
     this.set({
       queue: [
         currentSong,
@@ -117,6 +125,7 @@ class PlayerState extends SimpleState {
     this.stop();
     if (queue[queueActiveIndex + 1]) {
       this.set({ queueActiveIndex: queueActiveIndex + 1 });
+      this.ready();
       this.play();
     }
   }
@@ -139,6 +148,7 @@ class PlayerState extends SimpleState {
         },
       ],
     });
+    this.ready();
   }
 
   addToQueueNext = (song) => {
@@ -152,6 +162,7 @@ class PlayerState extends SimpleState {
         ...this.state.queue.slice(this.state.queueActiveIndex + 1),
       ],
     });
+    this.ready();
   }
 
   queuePlaylist = (playlist, index) => {
@@ -163,7 +174,20 @@ class PlayerState extends SimpleState {
       })),
       queueActiveIndex: index,
     });
+    this.ready();
     this.play();
+  }
+
+  queueGoTo = (queueActiveIndex) => {
+    this.stop();
+    this.set({ queueActiveIndex });
+    this.ready();
+    this.play();
+  }
+
+  updateVolume = (volume) => {
+    this.state.audio.volume = volume;
+    this.set({ volume });
   }
 }
 

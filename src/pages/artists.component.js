@@ -19,13 +19,21 @@ export class Artists extends Component {
     const { artist } = this.state;
     return artist && (
       <Scoped css={css}>
-        <div className="page">
+        <div className="artist">
           <div className="artist-name">
             {artist.name}
           </div>
-          <Album
-            album={artist.albums[0]}
-          />
+          {artist.albums.map(album => (
+            <div
+              key={album.id}
+              className="artist-album"
+            >
+              <Album
+                key={album.id}
+                album={album}
+              />
+            </div>
+          ))}
         </div>
       </Scoped>
     );
@@ -33,7 +41,18 @@ export class Artists extends Component {
 }
 
 const css = k`
+  .artist {
+    padding: 1.6rem;
+  }
+  
   .artist-name {
     font-size: 2rem;
+    margin-bottom: 1.6rem;
+  }
+  
+  .artist-album {
+    margin-right: 1.6rem;
+    margin-bottom: 1.6rem;
+    display: inline-block;
   }
 `;

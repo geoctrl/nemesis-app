@@ -5,6 +5,8 @@ $color-danger: #EF5B55;
 $color-info: #987284;
 $color-dark: #2B303A;
 
+$color-primary-highlight: #EDF3FD;
+
 $color-grey-10: #f9f9f9;
 $color-grey-25: #f3f3f3;
 $color-grey-50: #e9e9e9;
@@ -44,6 +46,8 @@ body {
   --color-danger: #{$color-danger};
   --color-info: #{$color-info};
   --color-dark: #{$color-dark};
+
+  --color-primary-highlight: #{$color-primary-highlight};
 
   --color-grey-10: #{$color-grey-10};
   --color-grey-25: #{$color-grey-25};

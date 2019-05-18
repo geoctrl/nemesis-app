@@ -20,6 +20,8 @@ export class Dropdown extends Component {
     contentHeight: oneOfType([string, number]),
     fixedContent: bool,
     cover: bool,
+    round: bool,
+    disabled: bool,
   };
   static defaultProps = {
     horizontal: 'east',
@@ -72,14 +74,14 @@ export class Dropdown extends Component {
     document.removeEventListener('click', this.documentClickHandler);
   }
   render() {
-    const { trigger, inline, fixedContent } = this.props;
+    const { trigger, inline, fixedContent, disabled } = this.props;
     const { isOpen } = this.state;
     return (
       <div
         className={a('dropdown').m('dropdown--inline', inline)}
         ref={this.dropdownEl}
       >
-      <span className="dropdown-trigger" onClick={this.toggle}>
+      <span className="dropdown-trigger" onClick={!disabled ? this.toggle : null}>
         {trigger({ isOpen })}
       </span>
         {fixedContent
@@ -96,6 +98,7 @@ export class Dropdown extends Component {
       contentHeight,
       fixedContent,
       cover,
+      round,
     } = this.props;
     const { isOpen, openAbove } = this.state;
     let positionStyles = {};
@@ -133,7 +136,9 @@ export class Dropdown extends Component {
           .m('dropdown-content--west', horizontal === 'west')
           .m('dropdown-content--md', size === 'md')
           .m('dropdown-content--lg', size === 'lg')
-          .m('dropdown-content--block', size === 'block')}
+          .m('dropdown-content--block', size === 'block')
+          .m('dropdown-content--round', round)
+        }
         style={{
           maxHeight: contentHeight,
           ...(isNumber(size) ? { width: `${size / 10}rem` } : {}),

@@ -3,8 +3,9 @@ import { Scoped, k } from 'kremling';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import { Player } from './player/player.component';
-import { Artists } from './lists/artists.component';
+import { Artists } from './pages/artists.component';
 import { Header } from './components/header.component';
+import { Albums } from './pages/albums.component';
 
 export class Root extends Component {
   render() {
@@ -14,14 +15,16 @@ export class Root extends Component {
           <div className="wrapper">
             <div className="main">
               <Header />
-              <Route
-                path="/artists/:id"
-                component={Artists}
-              />
-              <Route
-                path="/albums/:id"
-                component={Artists}
-              />
+              <div className="page-wrapper">
+                <Route
+                  path="/artists/:id"
+                  component={Artists}
+                />
+                <Route
+                  path="/albums/:id"
+                  component={Albums}
+                />
+              </div>
             </div>
             <Player />
           </div>
@@ -43,7 +46,13 @@ const css = k`
   
   .main {
     flex-grow: 1;
-    background-color: var(--color-grey-50);
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .page-wrapper {
+    flex-grow: 1;
     overflow: auto;
   }
 `;
