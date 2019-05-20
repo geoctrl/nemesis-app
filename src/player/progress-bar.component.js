@@ -124,6 +124,8 @@ const css = k`
     font-size: 1.2rem;
     color: var(--color-grey-500);
     position: relative;
+    user-select: none;
+    cursor: default;
   }
   
   .progress-bar::after {
@@ -196,5 +198,6 @@ const css = k`
     display: flex;
     justify-content: space-between;
     height: 1.6rem;
+    user-select: none;
   }
 `;

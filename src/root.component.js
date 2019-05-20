@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Scoped, k } from 'kremling';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
 
 import { Player } from './player/player.component';
 import { Artists } from './pages/artists.component';
 import { Header } from './components/header.component';
 import { Albums } from './pages/albums.component';
+import { ArtistList } from './pages/artist-list.component';
+import { TabContainer, Tab } from './components/tab.component';
 
 export class Root extends Component {
   render() {
@@ -16,6 +18,11 @@ export class Root extends Component {
             <div className="main">
               <Header />
               <div className="page-wrapper">
+                <Route
+                  path="/artists"
+                  component={ArtistList}
+                  exact
+                />
                 <Route
                   path="/artists/:id"
                   component={Artists}

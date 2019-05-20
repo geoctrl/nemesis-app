@@ -15,6 +15,8 @@ const initialState = {
   volume: 1,
 };
 
+const backendUrl = `http://localhost:3000`;
+
 class PlayerState extends SimpleState {
   setAudio = (audio) => {
     this.set({ audio });
@@ -25,16 +27,14 @@ class PlayerState extends SimpleState {
   ready = () => {
     const { audio, queue, queueActiveIndex } = this.state;
     if (!audio.getAttribute('src')) {
-      audio.setAttribute('src', queue[queueActiveIndex].src);
+      audio.setAttribute('src', `${backendUrl}/music/${queue[queueActiveIndex].src}`);
     }
   }
 
   stop = () => {
-    clearInterval(durationInterval);
-    this.set({
-      audioPlaying: false,
-    });
     const { audio } = this.state;
+    clearInterval(durationInterval);
+    this.set({ audioPlaying: false });
     audio.setAttribute('src', '');
   }
 
@@ -46,8 +46,8 @@ class PlayerState extends SimpleState {
   }
 
   pause = () => {
-    clearInterval(durationInterval);
     const { audio } = this.state;
+    clearInterval(durationInterval);
     audio.pause();
     this.set({ audioPlaying: false });
   }
@@ -107,7 +107,7 @@ class PlayerState extends SimpleState {
     const { audio } = this.state;
     const duration = audio.duration;
     const currentTime = (duration * seekTo) / 100;
-    audio.currentTime = currentTime < duration - 1 ? currentTime : currentTime - 1;
+    audio.currentTime = Math.floor(currentTime < duration - 1 ? currentTime : currentTime - 1);
     this.updateCurrentTime();
   }
 
